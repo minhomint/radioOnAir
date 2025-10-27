@@ -925,9 +925,8 @@
             const isWeekday = timeInfo.isWeekday;
             const container = document.getElementById('programs-container');
             
-            // 방송 중인 프로그램 찾기
-            let liveProgram = null;
-            let liveKey = null;
+            // 방송 중인 프로그램들 찾기 (여러 개 가능)
+            const livePrograms = [];
             
             for (const [key, program] of Object.entries(programs)) {
                 // 평일 전용 프로그램은 주말에 스킵
@@ -936,18 +935,17 @@
                 if (program.weekendOnly && isWeekday) continue;
                 
                 if (currentTime >= program.startTime && currentTime <= program.endTime) {
-                    liveProgram = program;
-                    liveKey = key;
-                    break;
+                    livePrograms.push({ key, program });
                 }
             }
 
             let html = '';
 
-            // 방송 중인 프로그램을 맨 위에
-            if (liveProgram) {
-                html += createProgramSection(liveKey, liveProgram, true);
-            }
+            // 방송 중인 프로그램들을 맨 위에 (시간순)
+            const liveKeys = livePrograms.map(p => p.key);
+            livePrograms.forEach(({ key, program }) => {
+                html += createProgramSection(key, program, true);
+            });
 
             // 나머지 프로그램들을 시간순으로
             const programOrder = isWeekday 
@@ -955,7 +953,7 @@
                 : ['9am', '12pm-weekend', '2pm-weekend'];
             
             programOrder.forEach(key => {
-                if (key !== liveKey && programs[key]) {
+                if (!liveKeys.includes(key) && programs[key]) {
                     // 평일 전용 프로그램은 주말에 표시 안 함
                     if (programs[key].weekdayOnly && !isWeekday) return;
                     // 주말 전용 프로그램은 평일에 표시 안 함
