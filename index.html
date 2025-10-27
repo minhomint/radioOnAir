@@ -719,7 +719,7 @@
             '6pm': {
                 title: '저녁 6시 프로그램',
                 timeRange: '(17:00 ~ 19:55)',
-                startTime: 17 * 60, // 17:00
+                startTime: 18 * 60 + 5, // 18:05
                 endTime: 19 * 60 + 55, // 19:55
                 className: 'time-6pm',
                 weekdayOnly: true,
@@ -867,25 +867,37 @@
             if (program.tbnEvening) {
                 html += `</div>
                 <h3 style="color: #333; margin: 20px 0 15px 0; font-size: 1.2em; background: white; padding: 12px 20px; border-radius: 10px; display: inline-block;">
-                    경인, 경북 달리는 라디오 <span style="color: #999; font-size: 0.8em;">(17:00~18:52)</span>
+                    경인 달리는 라디오 <span style="color: #999; font-size: 0.8em;">(17:00~18:52)</span>
                 </h3>
                 <div class="cards-grid">`;
                 
-                // 경인, 경북만
-                const eveningStations1 = tbnStations.filter(s => s.name === '경인tbn' || s.name === '경북tbn');
+                // 경인만
+                const eveningStations1 = tbnStations.filter(s => s.name === '경인tbn');
                 eveningStations1.forEach(station => {
                     html += createCard(station);
                 });
 
                 html += `</div>
                 <h3 style="color: #333; margin: 20px 0 15px 0; font-size: 1.2em; background: white; padding: 12px 20px; border-radius: 10px; display: inline-block;">
-                    그 외 달리는 라디오 <span style="color: #999; font-size: 0.8em;">(18:05~19:55)</span>
+                    경북 달리는 라디오 <span style="color: #999; font-size: 0.8em;">(17:00~18:55)</span>
+                </h3>
+                <div class="cards-grid">`;
+                
+                // 경북만
+                const eveningStations2 = tbnStations.filter(s => s.name === '경북tbn');
+                eveningStations2.forEach(station => {
+                    html += createCard(station);
+                });
+
+                html += `</div>
+                <h3 style="color: #333; margin: 20px 0 15px 0; font-size: 1.2em; background: white; padding: 12px 20px; border-radius: 10px; display: inline-block;">
+                    지역별 달리는 라디오 <span style="color: #999; font-size: 0.8em;">(18:05~19:55)</span>
                 </h3>
                 <div class="cards-grid">`;
 
                 // 나머지 지역
-                const eveningStations2 = tbnStations.filter(s => s.name !== '경인tbn' && s.name !== '경북tbn');
-                eveningStations2.forEach(station => {
+                const eveningStations3 = tbnStations.filter(s => s.name !== '경인tbn' && s.name !== '경북tbn');
+                eveningStations3.forEach(station => {
                     html += createCard(station);
                 });
             }
