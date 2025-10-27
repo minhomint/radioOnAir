@@ -716,14 +716,23 @@
                 weekendOnly: true,
                 tbnWeekend2: true
             },
+            '5pm': {
+                title: '저녁 5시 프로그램',
+                timeRange: '(17:00 ~ 18:55)',
+                startTime: 17 * 60, // 17:00
+                endTime: 18 * 60 + 55, // 18:55
+                className: 'time-5pm',
+                weekdayOnly: true,
+                tbnEveningGyeongin: true
+            },
             '6pm': {
                 title: '저녁 6시 프로그램',
-                timeRange: '(17:00 ~ 19:55)',
+                timeRange: '(18:05 ~ 19:55)',
                 startTime: 18 * 60 + 5, // 18:05
                 endTime: 19 * 60 + 55, // 19:55
                 className: 'time-6pm',
                 weekdayOnly: true,
-                tbnEvening: true
+                tbnEveningOthers: true
             },
             '8pm': {
                 title: '저녁 8시 프로그램',
@@ -863,8 +872,8 @@
                 });
             }
 
-            // tbn 저녁 달리는 라디오
-            if (program.tbnEvening) {
+            // tbn 저녁 달리는 라디오 - 경인, 경북
+            if (program.tbnEveningGyeongin) {
                 html += `</div>
                 <h3 style="color: #333; margin: 20px 0 15px 0; font-size: 1.2em; background: white; padding: 12px 20px; border-radius: 10px; display: inline-block;">
                     경인 달리는 라디오 <span style="color: #999; font-size: 0.8em;">(17:00~18:52)</span>
@@ -888,7 +897,10 @@
                 eveningStations2.forEach(station => {
                     html += createCard(station);
                 });
+            }
 
+            // tbn 저녁 달리는 라디오 - 지역별
+            if (program.tbnEveningOthers) {
                 html += `</div>
                 <h3 style="color: #333; margin: 20px 0 15px 0; font-size: 1.2em; background: white; padding: 12px 20px; border-radius: 10px; display: inline-block;">
                     지역별 달리는 라디오 <span style="color: #999; font-size: 0.8em;">(18:05~19:55)</span>
@@ -939,8 +951,8 @@
 
             // 나머지 프로그램들을 시간순으로
             const programOrder = isWeekday 
-                ? ['9am', '12pm', '2pm', '6pm', '8pm'] 
-                : ['9am', '12pm-weekend', '2pm-weekend', '6pm'];
+                ? ['9am', '12pm', '2pm', '5pm', '6pm', '8pm'] 
+                : ['9am', '12pm-weekend', '2pm-weekend'];
             
             programOrder.forEach(key => {
                 if (key !== liveKey && programs[key]) {
